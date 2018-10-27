@@ -1,0 +1,83 @@
+
+<section class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div id="chart"></div>
+            </div>
+        </div>
+        <!-- <button id="btnUpdate">Update</button> -->
+    </div>
+</section>
+
+<script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/msgpack5/dist/msgpack5.js"></script>
+<script src="~/lib/@@aspnet/signalr-protocol-msgpack/dist/browser/signalr-protocol-msgpack.js"></script>
+<script>
+
+    // var fruits = [
+    //     { id:"1", fruit: 'Oranges', yield: 10, consumed: 7 },
+    //     { id:"2", fruit: 'Apples', yield: 15, consumed: 14 },
+    //     { id:"3", fruit: 'Bananas', yield: 9, consumed: 9 }
+    // ];
+    $(function() {
+
+        $.ajax({
+            type: "GET",
+            url: "GetDataChart",
+            dataType: "json",
+            success: function (response) {
+                BindChart(response);
+            }
+        });
+
+        
+
+        $("#btnUpdate").on("click", function(){
+
+            //  var updatedDataSource = [
+            //         { fruit: 'Oranges', yield: 50, consumed: 7 },
+            //         { fruit: 'Apples', yield: 20, consumed: 14 },
+            //         { fruit: 'Bananas', yield: 9, consumed: 9 } ];
+
+            //     var chart =  $("#chart").dxChart("instance");
+            //     chart.option({ dataSource: updatedDataSource });
+        })
+
+    });
+
+    
+    var connection = new signalR.HubConnectionBuilder().withUrl("/Hubs").withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol())
+                            .build();
+
+
+    connection.on("UpdateChart", function (data) {
+        //alert(JSON.stringify(data));
+        UpdateChart(data);
+    });
+
+    connection.start().catch(function (err) {
+        
+        return console.error(err.toString());
+    });
+
+
+    function BindChart(data)
+    {
+        $("#chart").dxChart({
+            dataSource: data,
+            commonSeriesSettings: {
+                argumentField: "fruit",
+                type: "bar"
+            },
+            series: [
+                { valueField: "yield" }
+            ]
+        });
+    }
+
+    function UpdateChart(data)
+    {
+        $("#chart").dxChart("option", "dataSource", data);
+    }
+</script>

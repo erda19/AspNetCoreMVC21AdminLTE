@@ -1,0 +1,29 @@
+<section class="content">
+    with message pack
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="txtUser" class="form-control" placeholder="Enter ...">
+                </div>
+                <div class="form-group">
+                    <label>Text</label>
+                    <input type="text" id="txtMessage" class="form-control" placeholder="Enter ...">
+                </div>
+                <button type="button" id="sendButtonMsg" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">&nbsp;</div>
+            <div class="col-6">
+                <ul id="messagesListPack"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/msgpack5/dist/msgpack5.js"></script>
+<script src="~/lib/@@aspnet/signalr-protocol-msgpack/dist/browser/signalr-protocol-msgpack.js"></script>
+<script src="~/js/signalRMessagePack.js"></script>
